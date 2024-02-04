@@ -1,5 +1,4 @@
 import os
-import json
 import argparse
 from string import ascii_letters, digits
 
@@ -12,22 +11,9 @@ def rand_string(size=10):
     return ''.join(np.random.choice(list(ascii_letters+digits), (size,)))
 
 
-def prepare_img(path: str):
-    """
-    Converts BGR to RGB
-
-    :param path: <str> Must be absolute path
-    :return: <numpy.ndarray>
-    """
-    img = cv2.imread(path)
-    # img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-    return img
-
-
 def image_resize(image, width=None, height=None, inter=cv2.INTER_AREA):
     """
-    Crude image resizing.
-    Adapted from the source:
+    Crude image resizing. Adapted from the source:
     https://stackoverflow.com/questions/44650888/resize-an-image-without-distortion-opencv
 
     #TODO: use interpolation for smoother result.
@@ -53,7 +39,7 @@ def image_resize(image, width=None, height=None, inter=cv2.INTER_AREA):
 
 
 def process_img(filepath, img_wm):
-    img_base = prepare_img(filepath)
+    img_base = cv2.imread(filepath)
     img_watermark = img_wm
 
     # Check if watermark.shape is bigger than img_base and adjust accordingly.
@@ -112,17 +98,18 @@ def main(**kwargs):
     assert os.path.exists(kwargs['watermark']),\
            f"Watermark {kwargs['watermark']} doest not exist!"
 
-    watermark = prepare_img(os.path.abspath(kwargs['watermark']))
+    watermark = cv2.imread(os.path.abspath(kwargs['watermark']))
     container = []
     if os.path.isfile(kwargs['source']):
         container.append({'source': os.path.abspath(kwargs['source'])})
     else:
         for root, dirs, files in os.walk(os.path.abspath(kwargs['source'])):
             for filename in files:
-                container.append({'source': os.path.abspath(filename)})
+                container.append({'source': os.path.join(root, filename)})
 
-    result = process(container, watermark)
-    print(json.dumps(result, indent=4))
+    data = process(container, watermark)
+    for item in data:
+        print("Source: {source}\nResult: {result}\n".format(**item))
 
 
 if __name__ == '__main__':
