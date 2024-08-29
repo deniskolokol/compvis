@@ -15,9 +15,9 @@ def image_resize(image, width=None, height=None, inter=cv2.INTER_AREA):
     """
     Crude image resizing. Adapted from the source:
     https://stackoverflow.com/questions/44650888/resize-an-image-without-distortion-opencv
-
-    #TODO: use interpolation for smoother result.
     """
+    #TODO: use interpolation for smoother result.
+
     # Initialize the dimensions of the image to be resized and
     # grab the image size.
     dim = None
