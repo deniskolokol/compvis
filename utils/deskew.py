@@ -57,7 +57,7 @@ def deskew_img(angle, img, output_path):
     else:
         (height, width) = img.shape[:2]
         center = (width // 2, height // 2)
-        M = cv2.getRotationMatrix2D(center, angle, 1.0)
+        M = cv2.getRotationMatrix2D(center, -angle, scale=1)
         corrected = cv2.warpAffine(
             img,
             M,
