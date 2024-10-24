@@ -28,11 +28,12 @@ def blur_faces(img):
     except TypeError as exc:
         return img
 
-    convexhull = cv2.convexHull(landmarks)
+    # cv2.fillPoly expects list of polygons.
+    convex_hulls = [cv2.convexHull(lm) for lm in landmarks]
 
     # Actual blurring.
     mask = np.zeros((height, width), np.uint8)
-    cv2.fillConvexPoly(mask, convexhull, 255)
+    cv2.fillPoly(mask, convex_hulls, 255)
 
     img_copy = cv2.blur(img_copy, (37, 37))
     face_extracted = cv2.bitwise_and(img_copy, img_copy, mask=mask)
@@ -42,7 +43,6 @@ def blur_faces(img):
     background = cv2.bitwise_and(img, img, mask=background_mask)
 
     # Put blurred face on the background.
-    # TODO: blur the border!
     return cv2.add(background, face_extracted)
 
 

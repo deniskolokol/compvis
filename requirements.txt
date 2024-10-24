@@ -1,9 +1,20 @@
-matplotlib==3.8.2
+# math & data
 numpy==1.26.3
-opencv-python==4.9.0.80
+scipy==1.11.4
 pandas==2.1.4
 scikit-learn==1.3.2
-scipy==1.11.4
+
+# visualization
+matplotlib==3.8.2
+
+# CV
+opencv-python==4.9.0.80
+mediapipe==0.10.15
+
+# misc
+filetype==1.2.0
+
+# python
 ipdb==0.13.13
 ipython==8.20.0
 jedi==0.19.1

@@ -1,6 +1,6 @@
-import mediapipe as mp
 import cv2
 import numpy as np
+import mediapipe as mp
 
 
 class FaceLandmarks:
@@ -15,12 +15,15 @@ class FaceLandmarks:
         frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         result = self.face_mesh.process(frame_rgb)
 
-        facelandmarks = []
+        landmarks = []
         for face_no, face_landmarks in enumerate(result.multi_face_landmarks):
+            lm = []
             for i in range(0, 468):
                 pt1 = face_landmarks.landmark[i]
                 x = int(pt1.x * width)
                 y = int(pt1.y * height)
-                facelandmarks.append([x, y])
+                lm.append([x, y])
 
-        return np.array(facelandmarks, np.int32)
+            landmarks.append(np.array(lm, np.int32))
+
+        return landmarks
